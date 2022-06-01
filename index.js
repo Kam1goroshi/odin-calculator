@@ -80,12 +80,12 @@ class DigitStack{
         return this.size === 0;
     }
 
-    toString(){
+    toNumber(){
         let number = "";
         while(!this.isEmpty()){
             number += this.popReverse().item;
         }
-        return number == "" ? 0 : parseInt(number);
+        return number == "" ? 0 : parseFloat(number);
     }
 }
 
@@ -122,12 +122,10 @@ const multiply = (a, b) => {
 //test digitstack
 const digitStack = new DigitStack();
 digitStack.push(5);
-console.log(JSON.parse(JSON.stringify(digitStack)));
-digitStack.push(10);
-digitStack.push(6);
-console.log(digitStack.toString());
-console.log(digitStack.toString());
-
+digitStack.push('.');
+digitStack.push(4);
+console.log(digitStack.toNumber());
+console.log(digitStack.toNumber());
 /**
 My idea is that I will have a singleton which remembers 3 numbers and 3
 operators and will only execute operations on 2 numbers at a time.
