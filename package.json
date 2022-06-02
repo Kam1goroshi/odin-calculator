@@ -2,5 +2,7 @@
   "dependencies": {
     "jest": "^28.1.0"
   },
-  "test": "jest"
+  "scripts": {
+    "test": "jest"
+  }
 }
