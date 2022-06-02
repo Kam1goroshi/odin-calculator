@@ -1,89 +1,93 @@
-class StackNode{
-    constructor(item){
+class StackNode {
+    constructor(item) {
         this.item = item;
         this.next = null;
         this.prev = null;
     }
-    setPrev(){
+    setPrev() {
         return this.prev;
     }
-    getNext(){
+    getNext() {
         return this.next;
     }
-    setNext(next){
+    setNext(next) {
         this.next = next;
     }
-    setPrev(prev){
+    setPrev(prev) {
         this.prev = prev;
     }
 }
-class DigitStack{
-    constructor(){
+class DigitStack {
+    constructor() {
         this.head = null;
         this.tail = null;
         this.size = 0;
     }
-    push(digit){
-        if(!this.size){
+
+    push(digit) {
+        if (!this.size) {
             this.head = new StackNode(digit);
             this.tail = this.head;
-        }else if(this.size === 1){
+        } else if (this.size === 1) {
             this.tail = new StackNode(digit);
             this.head.setNext(this.tail);
             this.tail.setPrev(this.head);
-        }else{
+        } else {
             this.tail.setNext(new StackNode(digit));
             this.tail.getNext().setPrev(this.tail);
             this.tail = this.tail.getNext();
         }
         this.size++;
     }
-    pop(){
+    peek(){
+        return this.tail.item;
+    }
+    pop() {
         let output = null;
         this.size--;
-        if(this.size === 0){
+        if (this.size === 0) {
             output = this.head;
             this.head = null;
             this.tail = null;
-        }else if(this.size === 1){
+        } else if (this.size === 1) {
             output = this.tail;
             output.setPrev(null);
             this.tail = this.head;
-        }else{
+        } else {
             output = this.tail;
             this.tail = this.tail.getPrev();
             output.setPrev(null);
         }
-        return output;
+        return output.item;
     }
 
-    popReverse(){
+    popReverse() {
         let output = null;
         this.size--;
-        if(this.size === 0){
+        if (this.size === 0) {
             output = this.head;
             this.head = null;
             this.tail = null;
-        }else if(this.size === 1){
+        } else if (this.size === 1) {
             output = this.head;
             output.setNext(null);
             this.head = this.tail;
-        }else{
+        } else {
             output = this.head;
             this.head = this.head.getNext();
             output.setNext(null);
         }
-        return output;
+        return output.item;
     }
 
-    isEmpty(){
+    isEmpty() {
         return this.size === 0;
     }
 
-    toNumber(){
+    toNumber() {
         let number = "";
-        while(!this.isEmpty()){
-            number += this.popReverse().item;
+        while (!this.isEmpty()) {
+            number += this.popReverse();
         }
         return number == "" ? 0 : parseFloat(number);
     }
@@ -117,6 +121,8 @@ const multiply = (a, b) => {
     return a * b;
 }
 
+
+let acceptDot = null;
 
 
 //test digitstack
