@@ -101,30 +101,6 @@ const areInputsDefined = (a, b) => {
         return undefined;
 }
 
-const add = (a, b) => {
-    if (areInputsDefined(a, b))
-        return undefined;
-    return a + b;
-}
-
-const subtract = (a, b) => {
-    if (areInputsDefined(a, b))
-        return undefined;
-    return a + b;
-}
-
-const divide = (a, b) => {
-    if (areInputsDefined(a, b) || b == 0)
-        return undefined;
-}
-
-const multiply = (a, b) => {
-    if (areInputsDefined(a, b))
-        return undefined;
-    return a * b;
-}
-
-
 let acceptDot = true;
 const digitStack1 = new DigitStack();
 const digitStack2 = new DigitStack();
