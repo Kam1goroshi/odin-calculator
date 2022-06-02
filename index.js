@@ -105,7 +105,8 @@ let acceptDot = true;
 const digitStack1 = new DigitStack();
 const digitStack2 = new DigitStack();
 const digitStack3 = new DigitStack();
-
+let result = "";
+let display = "";
 /**
  * Common input state machine for every position "? op ? op ?"
  * If the stack is empty, it accepts '-' and doesn't accept 0
@@ -194,7 +195,7 @@ const getPrioritySecondNumberInput = (input) => {
     if (!getInputHelper(input, digitStack2) && (digitStack2.size > 1)) {
         if (input === '+' || input === '-' || input === '*' || input === '/') {
             const op = digitStack2.popReverse();
-            let result = "";
+            result = "";
             if (op === '*') {
                 result += (digitStack1.toNumber() * digitStack2.toNumber());
             } else if (op === '/') {
@@ -226,7 +227,7 @@ const getThirdNumberInput = (input) => {
     if (!getInputHelper(input, digitStack3) && (digitStack3.size > 1)) {
         if (input === '*' || input === '/' || input === '+' || input === '-' ) {
             const op = digitStack3.popReverse();
-            let result = "";
+            result = "";
             if (op === '*') {
                 result += (digitStack2.toNumber() * digitStack3.toNumber());
             } else if (op === '/') {
