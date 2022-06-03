@@ -108,6 +108,7 @@ class DigitStack {
     }
 
     toNumber() {
+        this.acceptDot = true;
         let number = "";
         while (!this.isEmpty()) {
             number += this.popReverse();
