@@ -98,7 +98,7 @@ class DigitStack {
     toReverseString() {
         let str = "";
         let iter = this.head;
-        while(iter){
+        while (iter) {
             str += iter.item;
             console.log(iter.item);
             iter = iter.getNext();
@@ -134,6 +134,8 @@ let result = "";
  * @returns true upon using an input
  */
 const getInputHelper = (input, stack) => {
+    if (input === '0' && (stack.isEmpty() || stack.peek() === '-' || stack.peek() === '+' || stack.peek() === '/' || stack.peek() === '*'))
+        return false;
     if (input === 'del') {
         if (stack.isEmpty())
             return true;
@@ -142,7 +144,7 @@ const getInputHelper = (input, stack) => {
         }
         return true;
     } else if (stack.isEmpty()) {
-        if ((!isNaN(input) && input !== 0) || input === '-') {
+        if (!isNaN(input) || input === '-') {
             stack.push(input);
             return true;
         }
