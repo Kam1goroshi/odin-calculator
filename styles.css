@@ -19,27 +19,38 @@ html, body {
   }
   #calculator {
     background-color: grey;
-    border-color: b;
+    border-color: rgb(30, 27, 32);
     border-style: solid;
     border-radius: 8px;
-    padding: 5px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
     gap: 14px;
-    width: 800px;
-    height: 800px;
+    width: 250px;
+    height: 400px;
   }
-
+  @media screen and (min-width: 800px) {
+    #calculator {
+      height: 700px;
+      width: 500px;
+    }
+  }
   button{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     background-color: rgb(134, 118, 224);
     border-radius: 10px 10px 17px 17px;
     border-color: black;
-    color: white;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.61);
+    color: rgb(226, 234, 235);
     font-size: x-large;
     font-weight: 700;
   }
 
   #display{
+    overflow: hidden;
+    display: flex;
+    justify-content: right;
+    align-items: center;
     background-color: lightgrey;
     flex: 1;
     font-family:Arial, Helvetica, sans-serif;
@@ -49,6 +60,7 @@ html, body {
     border-radius: 20px;
     border-width: 5px;
   }
+
   #buttons {
     display: grid;
     flex: 2;

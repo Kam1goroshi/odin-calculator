@@ -120,8 +120,6 @@ class Calculator {
             }
         }
 
-        console.log("rs: " + rightStash);
-        console.log("ls: " + leftStash);
         if (!isNaN(rightStash)) {
             if (op === '-')
                 leftStash = parseFloat(leftStash) - parseFloat(rightStash);
