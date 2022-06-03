@@ -1,5 +1,5 @@
 html, body {
-    background-color: #706883;
+    background-color: #9d97ac;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -26,8 +26,8 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    width: 400px;
-    height: 400px;
+    width: 800px;
+    height: 800px;
   }
 
   button{
@@ -42,6 +42,8 @@ html, body {
   #display{
     background-color: lightgrey;
     flex: 1;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 46px;
     border-color: rgb(54, 52, 52);
     border-style: solid;
     border-radius: 20px;
