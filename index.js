@@ -95,7 +95,6 @@ class DigitStack {
         return number == "" ? 0 : parseFloat(number);
     }
 }
-
 const areInputsDefined = (a, b) => {
     if (a === undefined || b === undefined)
         return undefined;
@@ -149,10 +148,10 @@ const getFirstNumberInput = (input) => {
     if (!getInputHelper(input, digitStack1) && (digitStack1.size > 1)) {
         if (input === '+' || input === '-') {
             digitStack2.push(input);
-            getInput = getSecondNumberInput;
+            getInputCallback = getSecondNumberInput;
         } else if (input === '*' || input === '/') {
             digitStack2.push(input);
-            getInput = getPrioritySecondNumberInput;
+            getInputCallback = getPrioritySecondNumberInput;
         }
     }
 }
@@ -174,10 +173,10 @@ const getSecondNumberInput = (input) => {
             digitStack2.push(input);
         } else if (input === '*' || input === '/') {
             digitStack3.push(input);
-            getInput = getThirdNumberInput;
+            getInputCallback = getThirdNumberInput;
         }
     } else if (digitStack2.isEmpty()) {
-        getInput = getFirstNumberInput;
+        getInputCallback = getFirstNumberInput;
     }
 }
 
@@ -207,10 +206,10 @@ const getPrioritySecondNumberInput = (input) => {
             digitStack2.push(input);
             //Remove priority, now the calculator is in a+.. state
             if (input === '+' || input === '-')
-                getInput = getSecondNumberInput;
+                getInputCallback = getSecondNumberInput;
         }
     } else if (digitStack2.isEmpty()) {
-        getInput = getFirstNumberInput;
+        getInputCallback = getFirstNumberInput;
     }
 }
 
@@ -225,7 +224,7 @@ const getPrioritySecondNumberInput = (input) => {
  */
 const getThirdNumberInput = (input) => {
     if (!getInputHelper(input, digitStack3) && (digitStack3.size > 1)) {
-        if (input === '*' || input === '/' || input === '+' || input === '-' ) {
+        if (input === '*' || input === '/' || input === '+' || input === '-') {
             const op = digitStack3.popReverse();
             result = "";
             if (op === '*') {
@@ -236,18 +235,52 @@ const getThirdNumberInput = (input) => {
             for (let i = 0; i < result.length; i++) {
                 digitStack2.push(result.charAt(i));
             }
-            if(input === '+' || input === '-'){
+            if (input === '+' || input === '-') {
                 result = "" + (digitStack1.toNumber() + digitStack2.toNumber());
-                console.log("res: "+ result)
+                console.log("res: " + result)
                 digitStack2.push(input);
                 for (let i = 0; i < result.length; i++) {
                     digitStack1.push(result.charAt(i));
                 }
-                getInput = getSecondNumberInput;
+                getInputCallback = getSecondNumberInput;
             }
         }
     } else if (digitStack3.isEmpty()) {
-        getInput = getSecondNumberInput;
+        getInputCallback = getSecondNumberInput;
     }
 }
-let getInput = getFirstNumberInput;
+let getInputCallback = getFirstNumberInput;
+const getInput = (input) => {
+    getInputCallback(input);
+}
+
+
+//Bind actions, the lazy way, no need to hard code
+//If needed improve later
+let bindKeys = () => {
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`b${i}`).addEventListener("click", (event) => {
+            getInput(`${i}`);
+            console.log(`${i}`);
+        })
+    }
+    tmpArray = new Array('+', '-', '/', '=', '*', 'del', '.', 'c');
+    tmpArray.forEach(element => {
+        document.getElementById(`b${element}`).addEventListener("click", (event) => {
+            getInput(`${element}`);
+            console.log(`${element}`); //for testing purposes
+        })
+    });
+    const queryClick = (id) => {
+        document.getElementById(id).click();
+    }
+    //I will hard code this one though
+    const body = document.querySelector('body');
+    body.addEventListener('keydown', (key) => {
+        const element = document.querySelector(`.k${key.key}`);
+        if(element)
+            element.click();
+    })
+}
+
+bindKeys();
