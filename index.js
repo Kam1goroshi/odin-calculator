@@ -35,9 +35,104 @@ class Calculator {
         this.tail = null;
     }
 
-    erase(){
-        while(this.head){
+    erase() {
+        while (this.head) {
             this.del();
+        }
+    }
+
+    /**
+     * @returns flushed expression with calculated multiplication and division
+     */
+    calculateHelper() {
+        let content = this.flush();
+        console.log(content);
+        let saveStash = "";
+        let op = "";
+        let activeStashLeft = "";
+        let activeStashRight = "";
+        let ready = false;
+        for (let i = 0; i < content.length; i++) {
+            if (content.charAt(i) === '+' || content.charAt(i) === '-') {
+                if (i == content.length - 1)
+                    break;
+                if (ready) {
+                    if (op === '*')
+                        activeStashLeft = parseFloat(activeStashLeft) * parseFloat(activeStashRight);
+                    else
+                        activeStashLeft = parseFloat(activeStashLeft) / parseFloat(activeStashRight);
+                    op = "";
+                    activeStashRight = "";
+                    ready = false;
+                }
+                saveStash += activeStashLeft + content.charAt(i);
+                activeStashLeft = "";
+            } else if (content.charAt(i) === '*' || content.charAt(i) === '/') {
+                if (i == content.length - 1)
+                    break;
+                if (ready) {
+                    if (op === '*')
+                        activeStashLeft = parseFloat(activeStashLeft) * parseFloat(activeStashRight);
+                    else
+                        activeStashLeft = parseFloat(activeStashLeft) / parseFloat(activeStashRight);
+                    activeStashRight = "";
+                }
+                op = content.charAt(i);
+                ready = true;
+            } else if (ready) {
+                activeStashRight += content.charAt(i);
+            } else {
+                activeStashLeft += content.charAt(i);
+            }
+        }
+        if (ready) {
+            if (op == '*')
+                saveStash += parseFloat(activeStashLeft) * parseFloat(activeStashRight);
+            else
+                saveStash += parseFloat(activeStashLeft) / parseFloat(activeStashRight);
+        } else {
+            saveStash += activeStashLeft + op + activeStashRight;
+        }
+        return saveStash;
+    }
+    calculate() {
+        let expression = "" + this.calculateHelper();
+        console.log("exp:" + expression)
+        let ready = false;
+        let leftStash = "";
+        let rightStash = "";
+        let op = "";
+        for (let i = 0; i < expression.length; i++) {
+            if (expression.charAt(i) == '-' || expression.charAt(i) == '+') {
+                if (ready) {
+                    if (op == '-')
+                        leftStash = parseFloat(leftStash) - parseFloat(rightStash);
+                    else leftStash = parseFloat(leftStash) + parseFloat(rightStash);
+                }
+                rightStash = "";
+                op = expression.charAt(i);
+                ready = true;
+            } else {
+                if (ready)
+                    rightStash += expression.charAt(i);
+                else
+                    leftStash += expression.charAt(i);
+            }
+        }
+
+        console.log("rs: " + rightStash);
+        console.log("ls: " + leftStash);
+        if (!isNaN(rightStash)) {
+            if (op === '-')
+                leftStash = parseFloat(leftStash) - parseFloat(rightStash);
+            else if(op === '+')
+                leftStash = parseFloat(leftStash) + parseFloat(rightStash);
+        }
+
+        leftStash = "" + leftStash;
+
+        for (let i = 0; i < leftStash.length; i++) {
+            this.addInput(leftStash.charAt(i));
         }
     }
 
@@ -51,8 +146,10 @@ class Calculator {
             return;
         }
         this.tail = this.tail.prev;
-        this.tail.next.prev = null;
-        this.tail.next = null;
+        if (this.tail != null) {
+            this.tail.next.prev = null;
+            this.tail.next = null;
+        }
         this.displayElement.textContent = this.displayElement.textContent.substring(0, this.displayElement.textContent.length - 1);
     }
 
@@ -77,6 +174,28 @@ class Calculator {
         }
     }
 
+
+    flush() {
+        let output = "";
+        let iter = this.head;
+        if (iter)
+            while (true) {
+                output = output.concat(iter.value)
+                iter = iter.next;
+                if (iter) {
+                    iter.prev.next = null;
+                    iter.prev = null;
+                } else {
+                    break;
+                }
+            }
+        this.head = null;
+        this.tail = null;
+        displayElement.textContent = "";
+        return output;
+
+    }
+
     toString() {
         let output = "";
         let iter = this.head;
@@ -96,6 +215,8 @@ const getInput = (input) => {
         calculator.del();
     else if (input == 'c')
         calculator.erase();
+    else if (input == '=')
+        calculator.calculate();
     else
         calculator.addInput(input);
     console.log(calculator.toString());
@@ -135,6 +256,12 @@ let bindKeys = () => {
                 break;
             case '.':
                 str = 'dot';
+                break;
+            case '=':
+                str = 'eq';
+                break;
+            case 'enter':
+                str = 'eq';
                 break;
         }
         const element = document.querySelector(`.k${str}`);
