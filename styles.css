@@ -7,9 +7,16 @@ html, body {
   }
   
   footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 4px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 32px;
     margin-top: auto;
-    background-color: #DCDCDC;
   }
+
 
   main{
     flex:1;
@@ -72,7 +79,7 @@ html, body {
     'button button button button';
     row-gap: 7px;
     column-gap: 10px;
-  }
+  } 
   #bc{
     grid-column: 1/span 2;
   }
