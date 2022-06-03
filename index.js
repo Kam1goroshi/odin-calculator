@@ -50,15 +50,19 @@ class DigitStack {
         this.size--;
         if (this.size === 0) {
             output = this.head;
+            output.setPrev(null);
+            output.setNext(null);
             this.head = null;
             this.tail = null;
         } else if (this.size === 1) {
             output = this.tail;
             output.setPrev(null);
             this.tail = this.head;
+            this.tail.setNext(null);
         } else {
             output = this.tail;
             this.tail = this.tail.getPrev();
+            this.tail.setNext(null);
             output.setPrev(null);
         }
         return output.item;
@@ -69,15 +73,19 @@ class DigitStack {
         this.size--;
         if (this.size === 0) {
             output = this.head;
+            output.setPrev(null);
+            output.setNext(null);
             this.head = null;
             this.tail = null;
         } else if (this.size === 1) {
             output = this.head;
             output.setNext(null);
             this.head = this.tail;
+            this.head.setPrev(null);
         } else {
             output = this.head;
             this.head = this.head.getNext();
+            this.head.setPrev(null);
             output.setNext(null);
         }
         return output.item;
@@ -85,6 +93,17 @@ class DigitStack {
 
     isEmpty() {
         return this.size === 0;
+    }
+
+    toReverseString() {
+        let str = "";
+        let iter = this.head;
+        while(iter){
+            str += iter.item;
+            console.log(iter.item);
+            iter = iter.getNext();
+        }
+        return str;
     }
 
     toNumber() {
@@ -105,7 +124,7 @@ const digitStack1 = new DigitStack();
 const digitStack2 = new DigitStack();
 const digitStack3 = new DigitStack();
 let result = "";
-let display = "";
+
 /**
  * Common input state machine for every position "? op ? op ?"
  * If the stack is empty, it accepts '-' and doesn't accept 0
@@ -258,10 +277,11 @@ const getInput = (input) => {
 //Bind actions, the lazy way, no need to hard code
 //If needed improve later
 let bindKeys = () => {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i <= 9; i++) {
         document.getElementById(`b${i}`).addEventListener("click", (event) => {
             getInput(`${i}`);
             console.log(`${i}`);
+            document.getElementById('display').textContent = digitStack1.toReverseString() + digitStack2.toReverseString() + digitStack3.toReverseString();
         })
     }
     tmpArray = new Array('+', '-', '/', '=', '*', 'del', '.', 'c');
@@ -269,16 +289,32 @@ let bindKeys = () => {
         document.getElementById(`b${element}`).addEventListener("click", (event) => {
             getInput(`${element}`);
             console.log(`${element}`); //for testing purposes
+            document.getElementById('display').textContent = digitStack1.toReverseString() + digitStack2.toReverseString() + digitStack3.toReverseString();
+            console.log(digitStack1.toReverseString())
         })
     });
     const queryClick = (id) => {
         document.getElementById(id).click();
     }
-    //I will hard code this one though
     const body = document.querySelector('body');
     body.addEventListener('keydown', (key) => {
-        const element = document.querySelector(`.k${key.key}`);
-        if(element)
+        let str = key.key;
+        switch (key.key) {
+            case '+':
+                str = 'add';
+                break;
+            case '-':
+                str = 'sub';
+                break;
+            case '*':
+                str = 'mul';
+                break;
+            case '/':
+                str = 'div';
+                break;
+        }
+        const element = document.querySelector(`.k${str}`);
+        if (element)
             element.click();
     })
 }
