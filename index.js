@@ -258,7 +258,7 @@ let bindKeys = () => {
             case '=':
                 str = 'eq';
                 break;
-            case 'enter':
+            case 'Enter':
                 str = 'eq';
                 break;
         }
