@@ -19,6 +19,7 @@ class StackNode {
 }
 class DigitStack {
     constructor() {
+        this.acceptDot = true;
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -119,7 +120,7 @@ const areInputsDefined = (a, b) => {
         return undefined;
 }
 
-let acceptDot = true;
+
 const digitStack1 = new DigitStack();
 const digitStack2 = new DigitStack();
 const digitStack3 = new DigitStack();
@@ -140,7 +141,7 @@ const getInputHelper = (input, stack) => {
         if (stack.isEmpty())
             return true;
         if (stack.pop() === '.') {
-            acceptDot = true;
+            stack.acceptDot = true;
         }
         return true;
     } else if (stack.isEmpty()) {
@@ -151,9 +152,9 @@ const getInputHelper = (input, stack) => {
     } else if (!isNaN(input)) {
         stack.push(input);
         return true;
-    } else if (input === '.' && acceptDot === true) {
+    } else if (input === '.' && stack.acceptDot === true) {
         stack.push('.');
-        acceptDot = false;
+        stack.acceptDot = false;
         return true;
     }
     return false;
@@ -224,6 +225,7 @@ const getPrioritySecondNumberInput = (input) => {
             for (let i = 0; i < result.length; i++) {
                 digitStack1.push(result.charAt(i));
             }
+            
             digitStack2.push(input);
             //Remove priority, now the calculator is in a+.. state
             if (input === '+' || input === '-')
